@@ -16,11 +16,6 @@ const resultsClearButton = $("#resultsClearButton");
 const resultsList = $("#resultsList");
 const resultsStatus = $("#resultsStatus");
 
-const settingsPanel = $("#settingsPanel");
-const themeSelect = $("#themeSelect");
-const newTabToggle = $("#newTabToggle");
-const suggestionsToggle = $("#suggestionsToggle");
-
 let currentQuery = "";
 let currentType = "web";
 let suggestionTimer = null;
@@ -42,17 +37,6 @@ function setTheme(theme) {
 
   document.documentElement.dataset.theme = resolved;
   localStorage.setItem("websearch-theme", theme);
-}
-
-function openSettings() {
-  settingsPanel.classList.add("open");
-  settingsPanel.setAttribute("aria-hidden", "false");
-  setTimeout(() => themeSelect.focus(), 30);
-}
-
-function closeSettings() {
-  settingsPanel.classList.remove("open");
-  settingsPanel.setAttribute("aria-hidden", "true");
 }
 
 function goHome() {
@@ -138,18 +122,21 @@ function renderResults(data) {
     const url = escapeHTML(item.url || item.link || "#");
     const description = escapeHTML(item.description || item.snippet || "");
     const safeHref = escapeHTML(item.url || item.link || "#");
+    const newTabToggle = $("#newTabToggle");
+    const openNewTab = newTabToggle && newTabToggle.checked;
 
     return `
       <article class="result">
         <span class="result-url">${url}</span>
-        <a class="result-title" href="${safeHref}" ${newTabToggle.checked ? 'target="_blank" rel="noopener noreferrer"' : ""}>${title}</a>
+        <a class="result-title" href="${safeHref}" ${openNewTab ? 'target="_blank" rel="noopener noreferrer"' : ""}>${title}</a>
         <p class="result-description">${description}</p>
       </article>`;
   }).join("");
 }
 
 function renderSuggestions(items) {
-  if (!suggestionsToggle.checked || !items.length) {
+  const suggestionsToggle = $("#suggestionsToggle");
+  if (!suggestionsToggle || !suggestionsToggle.checked || !items.length) {
     suggestions.hidden = true;
     suggestions.innerHTML = "";
     return;
@@ -168,8 +155,6 @@ function renderSuggestions(items) {
 }
 
 async function fetchSuggestions(query) {
-  // Backend contract: GET /api/suggestions?q=...
-  // Returning { suggestions: ["...", "..."] } is enough.
   try {
     const url = new URL("/api/suggestions", window.location.origin);
     url.searchParams.set("q", query);
@@ -183,7 +168,7 @@ async function fetchSuggestions(query) {
     const data = await response.json();
     renderSuggestions(Array.isArray(data?.suggestions) ? data.suggestions : []);
   } catch {
-    // Suggestions are optional; a failed suggestion request should not affect search.
+    // Suggestions are optional
   }
 }
 
@@ -208,13 +193,15 @@ searchInput.addEventListener("input", () => {
     return;
   }
 
-  if (!suggestionsToggle.checked) return;
+  const suggestionsToggle = $("#suggestionsToggle");
+  if (!suggestionsToggle || !suggestionsToggle.checked) return;
 
   suggestionTimer = setTimeout(() => fetchSuggestions(query), 180);
 });
 
 searchInput.addEventListener("focus", () => {
-  if (searchInput.value.trim().length >= 2 && suggestionsToggle.checked) {
+  const suggestionsToggle = $("#suggestionsToggle");
+  if (searchInput.value.trim().length >= 2 && suggestionsToggle && suggestionsToggle.checked) {
     fetchSuggestions(searchInput.value.trim());
   }
 });
@@ -254,31 +241,9 @@ document.querySelectorAll(".tab").forEach((tab) => {
   });
 });
 
-$("#settingsButton").addEventListener("click", openSettings);
-$("#resultsSettingsButton").addEventListener("click", openSettings);
-$("#closeSettingsButton").addEventListener("click", closeSettings);
-$("#settingsBackdrop").addEventListener("click", closeSettings);
-$("#homeButton").addEventListener("click", goHome);
-$("#resultsHomeButton").addEventListener("click", goHome);
-
-themeSelect.addEventListener("change", () => setTheme(themeSelect.value));
-
-newTabToggle.addEventListener("change", () => {
-  localStorage.setItem("websearch-new-tab", newTabToggle.checked ? "1" : "0");
-});
-
-suggestionsToggle.addEventListener("change", () => {
-  localStorage.setItem("websearch-suggestions", suggestionsToggle.checked ? "1" : "0");
-  if (!suggestionsToggle.checked) suggestions.hidden = true;
-});
-
 document.addEventListener("keydown", (event) => {
   if (event.key === "Escape") {
-    if (settingsPanel.classList.contains("open")) {
-      closeSettings();
-    } else {
-      suggestions.hidden = true;
-    }
+    suggestions.hidden = true;
   }
 
   if (event.key === "/" && document.activeElement?.tagName !== "INPUT") {
@@ -298,15 +263,11 @@ window.addEventListener("popstate", () => {
   }
 });
 
-// Restore preferences.
+// Restore preferences
 const savedTheme = localStorage.getItem("websearch-theme") || "system";
-themeSelect.value = savedTheme;
 setTheme(savedTheme);
 
-newTabToggle.checked = localStorage.getItem("websearch-new-tab") === "1";
-suggestionsToggle.checked = localStorage.getItem("websearch-suggestions") !== "0";
-
-// If opened directly with ?q=..., run the search once the page loads.
+// If opened directly with ?q=..., run the search once the page loads
 const initialQuery = new URLSearchParams(location.search).get("q");
 if (initialQuery) {
   performSearch(initialQuery);

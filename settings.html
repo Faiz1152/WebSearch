@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="WebSearch Settings">
+    <meta name="theme-color" content="#f5f5f3">
+    <title>Settings - WebSearch</title>
+    <link rel="icon" type="image/x-icon" href="favicon.ico">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header class="topbar" aria-label="WebSearch navigation">
+        <a href="index.html" class="icon-button" title="Home" aria-label="Back to WebSearch">
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+                <path d="m15 18-6-6 6-6"></path>
+            </svg>
+        </a>
+    </header>
+
+    <main class="settings-page">
+        <div class="settings-page-container">
+            <h1>Settings</h1>
+
+            <section class="settings-group">
+                <h2>Appearance</h2>
+                <label class="setting-item">
+                    <span>Theme</span>
+                    <select id="themeSelect" aria-label="Select theme">
+                        <option value="system">System</option>
+                        <option value="light">Light</option>
+                        <option value="dark">Dark</option>
+                    </select>
+                </label>
+            </section>
+
+            <section class="settings-group">
+                <h2>Search</h2>
+                <label class="setting-item">
+                    <span>Open results in a new tab</span>
+                    <input id="newTabToggle" type="checkbox" aria-label="Open results in a new tab">
+                </label>
+                <label class="setting-item">
+                    <span>Search suggestions</span>
+                    <input id="suggestionsToggle" type="checkbox" checked aria-label="Enable search suggestions">
+                </label>
+            </section>
+
+            <section class="settings-group">
+                <h2>About WebSearch</h2>
+                <p>WebSearch provides a clean, professional search interface that communicates with a backend service to deliver search results from configured providers.</p>
+                <p>The search uses <code>/api/search?q=...&type=...</code> to retrieve results. Provider information and privacy details can be found on the About page.</p>
+                <a href="about.html" class="settings-link">Learn more about WebSearch →</a>
+            </section>
+        </div>
+    </main>
+
+    <script>
+        const $ = (selector) => document.querySelector(selector);
+        const themeSelect = $("#themeSelect");
+        const newTabToggle = $("#newTabToggle");
+        const suggestionsToggle = $("#suggestionsToggle");
+
+        function setTheme(theme) {
+            const resolved = theme === "system"
+                ? (window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light")
+                : theme;
+            document.documentElement.dataset.theme = resolved;
+            localStorage.setItem("websearch-theme", theme);
+        }
+
+        themeSelect.addEventListener("change", () => setTheme(themeSelect.value));
+        newTabToggle.addEventListener("change", () => {
+            localStorage.setItem("websearch-new-tab", newTabToggle.checked ? "1" : "0");
+        });
+        suggestionsToggle.addEventListener("change", () => {
+            localStorage.setItem("websearch-suggestions", suggestionsToggle.checked ? "1" : "0");
+        });
+
+        const savedTheme = localStorage.getItem("websearch-theme") || "system";
+        themeSelect.value = savedTheme;
+        setTheme(savedTheme);
+        newTabToggle.checked = localStorage.getItem("websearch-new-tab") === "1";
+        suggestionsToggle.checked = localStorage.getItem("websearch-suggestions") !== "0";
+    </script>
+</body>
+</html>
