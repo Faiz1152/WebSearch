@@ -1,115 +1,64 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="WebSearch — a clean, modern search engine interface">
-    <meta name="theme-color" content="#f5f5f3">
-    <title>WebSearch</title>
-    <link rel="icon" type="image/x-icon" href="favicon.ico">
-    <link rel="stylesheet" href="style.css">
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>WebSearch</title>
+  <link rel="icon" type="image/x-icon" href="favicon.ico">
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <!-- Homepage View -->
-    <div id="homepage-view" class="view active">
-        <header class="topbar" aria-label="WebSearch navigation">
-            <a href="settings.html" class="icon-button" title="Settings" aria-label="Open settings">
-                <svg viewBox="0 0 24 24" aria-hidden="true">
-                    <circle cx="12" cy="12" r="3"></circle>
-                    <path d="M12 1v6m0 6v6M4.22 4.22l4.24 4.24m6.08 0l4.24-4.24M1 12h6m6 0h6M4.22 19.78l4.24-4.24m6.08 0l4.24 4.24"></path>
-                </svg>
-            </a>
-        </header>
+  <div class="page homepage" id="homepage">
+    <header class="topbar">
+      <a href="settings.html" class="icon-button" aria-label="Settings" title="Settings">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="3"></circle><path d="M12 1v6m0 6v6M4.22 4.22l4.24 4.24m6.08 0l4.24-4.24M1 12h6m6 0h6M4.22 19.78l4.24-4.24m6.08 0l4.24 4.24"></path></svg>
+      </a>
+    </header>
 
-        <main class="home" id="homeView">
-            <section class="hero" aria-labelledby="brandName">
-                <button class="brand" id="homeButton" type="button" aria-label="WebSearch home" onclick="goHome()">
-                    <img src="favicon.ico" alt="" class="brand-mark">
-                    <span id="brandName">WebSearch</span>
-                </button>
+    <main class="hero">
+      <img src="favicon.ico" alt="WebSearch" class="brand-large">
 
-                <form class="search-form" id="searchForm" role="search">
-                    <div class="search-shell" id="searchShell">
-                        <svg class="search-icon" viewBox="0 0 24 24" aria-hidden="true">
-                            <circle cx="10.8" cy="10.8" r="6.7"></circle>
-                            <path d="m16 16 5 5"></path>
-                        </svg>
+      <form id="searchForm" class="search-form" role="search" autocomplete="off">
+        <div class="search-shell">
+          <input id="searchInput" name="q" type="search" inputmode="search" placeholder="Search the web..." aria-label="Search the web">
+          <button class="submit-button" type="submit" aria-label="Search">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="10.8" cy="10.8" r="6.7"></circle><path d="m16 16 5 5"></path></svg>
+          </button>
+        </div>
+        <div id="suggestions" class="suggestions" hidden></div>
+      </form>
+    </main>
+  </div>
 
-                        <input
-                            id="searchInput"
-                            name="q"
-                            type="search"
-                            inputmode="search"
-                            autocomplete="off"
-                            spellcheck="false"
-                            placeholder="Search the web..."
-                            aria-label="Search the web">
-
-                        <button class="clear-button" id="clearButton" type="button" aria-label="Clear search" title="Clear search">
-                            <svg viewBox="0 0 24 24" aria-hidden="true">
-                                <path d="m7 7 10 10M17 7 7 17"></path>
-                            </svg>
-                        </button>
-
-                        <button class="submit-button" type="submit" aria-label="Search" title="Search">
-                            <svg viewBox="0 0 24 24" aria-hidden="true">
-                                <circle cx="10.8" cy="10.8" r="6.7"></circle>
-                                <path d="m16 16 5 5"></path>
-                            </svg>
-                        </button>
-                    </div>
-
-                    <div class="suggestions" id="suggestions" hidden></div>
-                </form>
-            </section>
-        </main>
+  <!-- Results view -->
+  <main class="results" id="resultsView" hidden>
+    <div class="results-top">
+      <div class="results-left">
+        <img src="favicon.ico" alt="WebSearch" class="brand-small">
+        <form id="resultsSearchForm" class="results-search-form" role="search" autocomplete="off">
+          <input id="resultsInput" name="q" type="search" aria-label="Search results">
+        </form>
+      </div>
+      <div class="results-right">
+        <a href="settings.html" class="icon-button" aria-label="Settings" title="Settings">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="3"></circle><path d="M12 1v6m0 6v6M4.22 4.22l4.24 4.24m6.08 0l4.24-4.24M1 12h6m6 0h6M4.22 19.78l4.24-4.24m6.08 0l4.24 4.24"></path></svg>
+        </a>
+      </div>
     </div>
 
-    <!-- Results View -->
-    <main class="results-view" id="resultsView" hidden>
-        <div class="results-topbar">
-            <button class="results-brand" id="resultsHomeButton" type="button" aria-label="WebSearch home" onclick="goHome()">
-                <img src="favicon.ico" alt="" class="results-brand-mark">
-                <span>WebSearch</span>
-            </button>
+    <nav class="tabs" role="tablist" aria-label="Search type">
+      <button class="tab active" data-type="all" type="button">All</button>
+      <button class="tab" data-type="images" type="button">Images</button>
+      <button class="tab" data-type="news" type="button">News</button>
+      <button class="tab" data-type="videos" type="button">Videos</button>
+    </nav>
 
-            <form class="results-search-form" id="resultsSearchForm" role="search">
-                <div class="search-shell results-search-shell">
-                    <svg class="search-icon" viewBox="0 0 24 24" aria-hidden="true">
-                        <circle cx="10.8" cy="10.8" r="6.7"></circle>
-                        <path d="m16 16 5 5"></path>
-                    </svg>
-                    <input id="resultsInput" name="q" type="search" autocomplete="off" spellcheck="false" aria-label="Search the web">
-                    <button class="clear-button" id="resultsClearButton" type="button" aria-label="Clear search">
-                        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m7 7 10 10M17 7 7 17"></path></svg>
-                    </button>
-                    <button class="submit-button" type="submit" aria-label="Search">
-                        <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="10.8" cy="10.8" r="6.7"></circle><path d="m16 16 5 5"></path></svg>
-                    </button>
-                </div>
-            </form>
+    <section class="results-body" aria-live="polite">
+      <div id="resultsStatus" class="results-status"></div>
+      <div id="resultsList" class="results-list"></div>
+    </section>
+  </main>
 
-            <a href="settings.html" class="icon-button" title="Settings" aria-label="Open settings">
-                <svg viewBox="0 0 24 24" aria-hidden="true">
-                    <circle cx="12" cy="12" r="3"></circle>
-                    <path d="M12 1v6m0 6v6M4.22 4.22l4.24 4.24m6.08 0l4.24-4.24M1 12h6m6 0h6M4.22 19.78l4.24-4.24m6.08 0l4.24 4.24"></path>
-                </svg>
-            </a>
-        </div>
-
-        <nav class="result-tabs" aria-label="Search type">
-            <button class="tab active" type="button" data-type="web">Web</button>
-            <button class="tab" type="button" data-type="images">Images</button>
-            <button class="tab" type="button" data-type="news">News</button>
-            <button class="tab" type="button" data-type="videos">Videos</button>
-        </nav>
-
-        <section class="results-content" aria-live="polite">
-            <div id="resultsStatus" class="results-status"></div>
-            <div id="resultsList" class="results-list"></div>
-        </section>
-    </main>
-
-    <script src="script.js"></script>
+  <script src="script.js"></script>
 </body>
 </html>

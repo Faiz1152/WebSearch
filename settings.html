@@ -1,87 +1,63 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="WebSearch Settings">
-    <meta name="theme-color" content="#f5f5f3">
-    <title>Settings - WebSearch</title>
-    <link rel="icon" type="image/x-icon" href="favicon.ico">
-    <link rel="stylesheet" href="style.css">
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Settings — WebSearch</title>
+  <link rel="icon" href="favicon.ico">
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <header class="topbar" aria-label="WebSearch navigation">
-        <a href="index.html" class="icon-button" title="Home" aria-label="Back to WebSearch">
-            <svg viewBox="0 0 24 24" aria-hidden="true">
-                <path d="m15 18-6-6 6-6"></path>
-            </svg>
-        </a>
-    </header>
+  <main class="settings" style="max-width:820px;margin:30px auto;padding:16px">
+    <h1>Settings</h1>
 
-    <main class="settings-page">
-        <div class="settings-page-container">
-            <h1>Settings</h1>
+    <section>
+      <h2>Appearance</h2>
+      <label><input type="radio" name="appearance" value="system"> System</label><br>
+      <label><input type="radio" name="appearance" value="light"> Light</label><br>
+      <label><input type="radio" name="appearance" value="dark"> Dark</label>
+    </section>
 
-            <section class="settings-group">
-                <h2>Appearance</h2>
-                <label class="setting-item">
-                    <span>Theme</span>
-                    <select id="themeSelect" aria-label="Select theme">
-                        <option value="system">System</option>
-                        <option value="light">Light</option>
-                        <option value="dark">Dark</option>
-                    </select>
-                </label>
-            </section>
+    <section style="margin-top:16px">
+      <h2>Search</h2>
+      <label><input id="suggestionsToggle" type="checkbox"> Search suggestions</label><br>
+      <label><input id="openNewToggle" type="checkbox"> Open results in new tab</label>
+    </section>
 
-            <section class="settings-group">
-                <h2>Search</h2>
-                <label class="setting-item">
-                    <span>Open results in a new tab</span>
-                    <input id="newTabToggle" type="checkbox" aria-label="Open results in a new tab">
-                </label>
-                <label class="setting-item">
-                    <span>Search suggestions</span>
-                    <input id="suggestionsToggle" type="checkbox" checked aria-label="Enable search suggestions">
-                </label>
-            </section>
+    <section style="margin-top:16px">
+      <h2>Backend</h2>
+      <p>WebSearch frontend communicates only with your backend. Change if needed.</p>
+      <input id="backendUrl" type="url" style="width:100%;padding:8px;border-radius:8px;border:1px solid #ddd" placeholder="https://your-backend.workers.dev">
+      <div style="margin-top:8px"><button id="saveBtn" class="submit-button">Save</button></div>
+    </section>
 
-            <section class="settings-group">
-                <h2>About WebSearch</h2>
-                <p>WebSearch provides a clean, professional search interface that communicates with a backend service to deliver search results from configured providers.</p>
-                <p>The search uses <code>/api/search?q=...&type=...</code> to retrieve results. Provider information and privacy details can be found on the About page.</p>
-                <a href="about.html" class="settings-link">Learn more about WebSearch →</a>
-            </section>
-        </div>
-    </main>
+    <section style="margin-top:24px">
+      <a id="aboutLink" href="about.html">About WebSearch</a>
+    </section>
 
-    <script>
-        const $ = (selector) => document.querySelector(selector);
-        const themeSelect = $("#themeSelect");
-        const newTabToggle = $("#newTabToggle");
-        const suggestionsToggle = $("#suggestionsToggle");
+    <section style="margin-top:24px;color:#666;font-size:13px">
+      <p>Settings are stored locally in your browser.</p>
+    </section>
+  </main>
 
-        function setTheme(theme) {
-            const resolved = theme === "system"
-                ? (window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light")
-                : theme;
-            document.documentElement.dataset.theme = resolved;
-            localStorage.setItem("websearch-theme", theme);
-        }
+  <script>
+    // load/save settings
+    const appearance = localStorage.getItem('websearch-theme') || 'system';
+    const openNew = localStorage.getItem('websearch-open-new') || 'on';
+    const suggestionsOn = (localStorage.getItem('websearch-suggestions') || 'on') === 'on';
+    const backend = localStorage.getItem('websearch-backend') || 'https://websearch-backend.khatrifaiz001.workers.dev';
 
-        themeSelect.addEventListener("change", () => setTheme(themeSelect.value));
-        newTabToggle.addEventListener("change", () => {
-            localStorage.setItem("websearch-new-tab", newTabToggle.checked ? "1" : "0");
-        });
-        suggestionsToggle.addEventListener("change", () => {
-            localStorage.setItem("websearch-suggestions", suggestionsToggle.checked ? "1" : "0");
-        });
+    document.querySelectorAll('input[name="appearance"]').forEach(r=>{ if(r.value===appearance) r.checked=true; r.addEventListener('change', ()=>{ localStorage.setItem('websearch-theme', r.value); }) });
+    document.getElementById('openNewToggle').checked = openNew === 'on';
+    document.getElementById('openNewToggle').addEventListener('change', e=>{ localStorage.setItem('websearch-open-new', e.target.checked ? 'on' : 'off' ); });
 
-        const savedTheme = localStorage.getItem("websearch-theme") || "system";
-        themeSelect.value = savedTheme;
-        setTheme(savedTheme);
-        newTabToggle.checked = localStorage.getItem("websearch-new-tab") === "1";
-        suggestionsToggle.checked = localStorage.getItem("websearch-suggestions") !== "0";
-    </script>
+    document.getElementById('suggestionsToggle').checked = suggestionsOn;
+    document.getElementById('suggestionsToggle').addEventListener('change', e=>{ localStorage.setItem('websearch-suggestions', e.target.checked ? 'on':'off'); });
+
+    const backendUrl = document.getElementById('backendUrl'); backendUrl.value = backend;
+    document.getElementById('saveBtn').addEventListener('click', ()=>{
+      const val = backendUrl.value.trim(); if(val) { localStorage.setItem('websearch-backend', val); window.__websearch_setBackend && window.__websearch_setBackend(val); alert('Saved'); }
+    });
+  </script>
 </body>
 </html>

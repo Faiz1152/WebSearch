@@ -1,88 +1,20 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="About WebSearch">
-    <meta name="theme-color" content="#f5f5f3">
-    <title>About - WebSearch</title>
-    <link rel="icon" type="image/x-icon" href="favicon.ico">
-    <link rel="stylesheet" href="style.css">
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>About — WebSearch</title>
+  <link rel="icon" href="favicon.ico">
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <header class="topbar" aria-label="WebSearch navigation">
-        <a href="settings.html" class="icon-button" title="Back" aria-label="Back to settings">
-            <svg viewBox="0 0 24 24" aria-hidden="true">
-                <path d="m15 18-6-6 6-6"></path>
-            </svg>
-        </a>
-    </header>
-
-    <main class="about-page">
-        <div class="about-page-container">
-            <div class="about-logo">
-                <img src="favicon.ico" alt="WebSearch" class="about-logo-img">
-            </div>
-
-            <h1>About WebSearch</h1>
-
-            <section class="about-section">
-                <h2>What is WebSearch?</h2>
-                <p>WebSearch is a clean, modern search interface designed to provide a professional and intuitive search experience. It offers a simple, distraction-free way to search the web with support for multiple search types including web results, images, news, and videos.</p>
-            </section>
-
-            <section class="about-section">
-                <h2>How It Works</h2>
-                <p>WebSearch operates as a frontend interface that communicates with a backend service. When you search, WebSearch sends your query to <code>/api/search</code>, where the backend processes your request and retrieves results from configured search providers.</p>
-                <p>The backend is responsible for:</p>
-                <ul class="about-list">
-                    <li>Processing search queries</li>
-                    <li>Managing provider integrations</li>
-                    <li>Retrieving and formatting results</li>
-                    <li>Handling API credentials securely</li>
-                </ul>
-            </section>
-
-            <section class="about-section">
-                <h2>Search Providers</h2>
-                <p>WebSearch is designed to work with multiple search providers through its backend service. The backend determines which provider handles your search and retrieves the results. WebSearch does not directly connect to any search service—all provider integrations are managed by the backend for security and privacy.</p>
-            </section>
-
-            <section class="about-section">
-                <h2>Privacy & Design</h2>
-                <p>WebSearch is built with simplicity and user experience in mind. It provides:</p>
-                <ul class="about-list">
-                    <li>A clean, minimal interface</li>
-                    <li>Support for light and dark themes</li>
-                    <li>Customizable search behavior</li>
-                    <li>No account or tracking requirements</li>
-                    <li>Proper separation between frontend and backend</li>
-                </ul>
-            </section>
-
-            <section class="about-section">
-                <h2>Architecture</h2>
-                <p>WebSearch follows a clean separation of concerns:</p>
-                <ul class="about-list">
-                    <li><strong>Frontend:</strong> HTML, CSS, and JavaScript—handles user interface and search presentation</li>
-                    <li><strong>Backend:</strong> Manages API credentials, provider integrations, and result delivery</li>
-                    <li><strong>Search Providers:</strong> Third-party services integrated through the backend</li>
-                </ul>
-            </section>
-
-            <section class="about-section about-footer">
-                <p>WebSearch is designed to be a continuously maintained search service that works with any compatible search provider backend.</p>
-                <a href="settings.html" class="about-link">← Back to Settings</a>
-            </section>
-        </div>
-    </main>
-
-    <script>
-        const savedTheme = localStorage.getItem("websearch-theme") || "system";
-        const resolved = savedTheme === "system"
-            ? (window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light")
-            : savedTheme;
-        document.documentElement.dataset.theme = resolved;
-    </script>
+  <main style="max-width:820px;margin:30px auto;padding:16px">
+    <h1>About WebSearch</h1>
+    <p>WebSearch is a privacy-focused search interface. The frontend is a static site that communicates only with a backend you control.</p>
+    <h2>Navigation</h2>
+    <p>Access this page only through Settings in the normal site UI.</p>
+    <h2>Privacy</h2>
+    <p>The frontend does not contact external search providers directly — all requests go to your backend.</p>
+  </main>
 </body>
 </html>
