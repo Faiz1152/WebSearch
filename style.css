@@ -33,11 +33,15 @@ body{background:var(--bg);color:#111}
 .result-url{color:var(--muted);font-size:13px}
 .result-description{color:#333;margin-top:6px}
 
-/* Image grid */
+/* Image & Video grid */
 .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:12px}
-.grid-item{background:var(--card);border-radius:12px;overflow:hidden}
-.grid-item img{width:100%;height:140px;object-fit:cover;display:block}
-.grid-item .meta{padding:8px}
+.grid-item{position:relative;border-radius:12px;overflow:hidden;background-color:#f1f1f1;height:160px;display:flex;align-items:flex-end}
+.grid-item .grid-link{position:absolute;inset:0;display:block}
+.grid-item .meta{position:relative;z-index:2;background:linear-gradient(180deg,transparent,rgba(0,0,0,0.5));color:white;padding:10px;backdrop-filter:blur(2px);width:100%}
+.grid-item .meta .result-title{color:#fff;font-size:14px}
+.grid-item .meta .result-url{color:rgba(255,255,255,0.8);font-size:12px;margin-top:4px}
+.grid-item .thumb{position:absolute;inset:0;background-size:cover;background-position:center;filter:brightness(0.95);z-index:1}
+.grid-item .play-icon{position:absolute;left:12px;top:12px;background:rgba(0,0,0,0.45);color:white;border-radius:999px;padding:6px;z-index:3}
 
 /* Responsive */
 @media (max-width:800px){
