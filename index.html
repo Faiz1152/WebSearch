@@ -1,152 +1,115 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="theme-color" content="#f7f7f5">
-  <meta name="description" content="WebSearch — a clean, private way to search the web.">
-  <title>WebSearch</title>
-  <link rel="icon" href="/favicon.ico" sizes="48x48">
-  <link rel="stylesheet" href="/style.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="WebSearch - A modern, clean search engine interface">
+    <meta name="theme-color" content="#f5f5f3">
+    <title>WebSearch</title>
+    <link rel="icon" type="image/x-icon" href="favicon.ico">
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <header class="topbar" aria-label="WebSearch navigation">
-    <button class="icon-button" id="settingsButton" type="button" aria-label="Open settings" title="Settings">
-      <svg viewBox="0 0 24 24" aria-hidden="true">
-        <path d="M12 8.2a3.8 3.8 0 1 0 0 7.6 3.8 3.8 0 0 0 0-7.6Zm8.1 3.8c0-.5-.1-1-.2-1.5l1.8-1.4-1.8-3.1-2.1.9c-.8-.7-1.7-1.2-2.7-1.5L14.8 3h-3.6l-.3 2.4c-1 .3-1.9.8-2.7 1.5l-2.1-.9-1.8 3.1 1.8 1.4c-.1.5-.2 1-.2 1.5s.1 1 .2 1.5l-1.8 1.4 1.8 3.1 2.1-.9c.8.7 1.7 1.2 2.7 1.5l.3 2.4h3.6l.3-2.4c1-.3 1.9-.8 2.7-1.5l2.1.9 1.8-3.1-1.8-1.4c.1-.5.2-1 .2-1.5Z"/>
-      </svg>
-    </button>
-  </header>
+    <!-- Homepage View -->
+    <div id="homepage-view" class="view active">
+        <header class="homepage-header">
+            <a href="settings.html" class="settings-icon" title="Settings" aria-label="Open settings">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <circle cx="12" cy="12" r="3"></circle>
+                    <path d="M12 1v6m0 6v6M4.22 4.22l4.24 4.24m6.08 0l4.24-4.24M1 12h6m6 0h6M4.22 19.78l4.24-4.24m6.08 0l4.24 4.24"></path>
+                </svg>
+            </a>
+        </header>
 
-  <main class="home" id="homeView">
-    <section class="hero" aria-labelledby="brandName">
-      <button class="brand" id="homeButton" type="button" aria-label="WebSearch home">
-        <img src="/favicon.ico" alt="" class="brand-mark">
-        <span id="brandName">WebSearch</span>
-      </button>
+        <main class="homepage-main">
+            <div class="logo-container">
+                <img src="favicon.ico" alt="WebSearch" class="homepage-logo">
+            </div>
 
-      <form class="search-form" id="searchForm" role="search">
-        <div class="search-shell" id="searchShell">
-          <svg class="search-icon" viewBox="0 0 24 24" aria-hidden="true">
-            <circle cx="10.8" cy="10.8" r="6.7"></circle>
-            <path d="m16 16 5 5"></path>
-          </svg>
+            <div class="search-section">
+                <form id="homepage-form" class="search-form" role="search">
+                    <div class="search-box">
+                        <svg class="search-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                            <circle cx="11" cy="11" r="8"></circle>
+                            <path d="m21 21-4.35-4.35"></path>
+                        </svg>
+                        <input
+                            type="text"
+                            id="homepage-search-input"
+                            class="search-input"
+                            placeholder="Search the web..."
+                            autocomplete="off"
+                            aria-label="Search"
+                            spellcheck="false">
+                        <button id="homepage-clear-btn" class="clear-btn" aria-label="Clear search" type="button" style="display: none;">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <line x1="18" y1="6" x2="6" y2="18"></line>
+                                <line x1="6" y1="6" x2="18" y2="18"></line>
+                            </svg>
+                        </button>
+                    </div>
 
-          <input
-            id="searchInput"
-            name="q"
-            type="search"
-            inputmode="search"
-            autocomplete="off"
-            spellcheck="false"
-            placeholder="Search the web..."
-            aria-label="Search the web"
-          >
-
-          <button class="clear-button" id="clearButton" type="button" aria-label="Clear search" title="Clear search">
-            <svg viewBox="0 0 24 24" aria-hidden="true">
-              <path d="m7 7 10 10M17 7 7 17"></path>
-            </svg>
-          </button>
-
-          <button class="submit-button" type="submit" aria-label="Search" title="Search">
-            <svg viewBox="0 0 24 24" aria-hidden="true">
-              <circle cx="10.8" cy="10.8" r="6.7"></circle>
-              <path d="m16 16 5 5"></path>
-            </svg>
-          </button>
-        </div>
-
-        <div class="suggestions" id="suggestions" hidden></div>
-      </form>
-    </section>
-  </main>
-
-  <main class="results-view" id="resultsView" hidden>
-    <div class="results-topbar">
-      <button class="results-brand" id="resultsHomeButton" type="button" aria-label="WebSearch home">
-        <img src="/favicon.ico" alt="" class="results-brand-mark">
-        <span>WebSearch</span>
-      </button>
-
-      <form class="results-search-form" id="resultsSearchForm" role="search">
-        <div class="search-shell results-search-shell">
-          <svg class="search-icon" viewBox="0 0 24 24" aria-hidden="true">
-            <circle cx="10.8" cy="10.8" r="6.7"></circle>
-            <path d="m16 16 5 5"></path>
-          </svg>
-          <input id="resultsInput" name="q" type="search" autocomplete="off" spellcheck="false" aria-label="Search the web">
-          <button class="clear-button" id="resultsClearButton" type="button" aria-label="Clear search">
-            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m7 7 10 10M17 7 7 17"></path></svg>
-          </button>
-          <button class="submit-button" type="submit" aria-label="Search">
-            <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="10.8" cy="10.8" r="6.7"></circle><path d="m16 16 5 5"></path></svg>
-          </button>
-        </div>
-      </form>
-
-      <button class="icon-button" id="resultsSettingsButton" type="button" aria-label="Open settings" title="Settings">
-        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 8.2a3.8 3.8 0 1 0 0 7.6 3.8 3.8 0 0 0 0-7.6Zm8.1 3.8c0-.5-.1-1-.2-1.5l1.8-1.4-1.8-3.1-2.1.9c-.8-.7-1.7-1.2-2.7-1.5L14.8 3h-3.6l-.3 2.4c-1 .3-1.9.8-2.7 1.5l-2.1-.9-1.8 3.1 1.8 1.4c-.1.5-.2 1-.2 1.5Z"/></svg>
-      </button>
+                    <div id="homepage-suggestions" class="suggestions-container" role="listbox" style="display: none;"></div>
+                </form>
+            </div>
+        </main>
     </div>
 
-    <nav class="result-tabs" aria-label="Search type">
-      <button class="tab active" type="button" data-type="web">Web</button>
-      <button class="tab" type="button" data-type="images">Images</button>
-      <button class="tab" type="button" data-type="news">News</button>
-      <button class="tab" type="button" data-type="videos">Videos</button>
-    </nav>
+    <!-- Results View -->
+    <div id="results-view" class="view" style="display: none;">
+        <header class="results-header">
+            <div class="results-header-left">
+                <a href="index.html" class="results-logo" aria-label="WebSearch home">
+                    <img src="favicon.ico" alt="WebSearch" class="results-logo-img">
+                </a>
+            </div>
 
-    <section class="results-content" aria-live="polite">
-      <div id="resultsStatus" class="results-status"></div>
-      <div id="resultsList" class="results-list"></div>
-    </section>
-  </main>
+            <form id="results-form" class="results-search-form" role="search">
+                <div class="results-search-box">
+                    <svg class="search-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                        <circle cx="11" cy="11" r="8"></circle>
+                        <path d="m21 21-4.35-4.35"></path>
+                    </svg>
+                    <input
+                        type="text"
+                        id="results-search-input"
+                        class="results-search-input"
+                        placeholder="Search..."
+                        autocomplete="off"
+                        aria-label="Search"
+                        spellcheck="false">
+                    <button id="results-clear-btn" class="clear-btn" aria-label="Clear search" type="button" style="display: none;">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <line x1="18" y1="6" x2="6" y2="18"></line>
+                            <line x1="6" y1="6" x2="18" y2="18"></line>
+                        </svg>
+                    </button>
+                </div>
 
-  <aside class="settings-panel" id="settingsPanel" aria-hidden="true">
-    <div class="settings-backdrop" id="settingsBackdrop"></div>
-    <section class="settings-card" role="dialog" aria-modal="true" aria-labelledby="settingsTitle">
-      <div class="settings-header">
-        <h2 id="settingsTitle">Settings</h2>
-        <button class="icon-button close-settings" id="closeSettingsButton" type="button" aria-label="Close settings">
-          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m7 7 10 10M17 7 7 17"></path></svg>
-        </button>
-      </div>
+                <div id="results-suggestions" class="suggestions-container" role="listbox" style="display: none;"></div>
+            </form>
 
-      <div class="settings-section">
-        <h3>Appearance</h3>
-        <label class="setting-row">
-          <span>Theme</span>
-          <select id="themeSelect">
-            <option value="system">System</option>
-            <option value="light">Light</option>
-            <option value="dark">Dark</option>
-          </select>
-        </label>
-      </div>
+            <a href="settings.html" class="settings-icon" title="Settings" aria-label="Open settings">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <circle cx="12" cy="12" r="3"></circle>
+                    <path d="M12 1v6m0 6v6M4.22 4.22l4.24 4.24m6.08 0l4.24-4.24M1 12h6m6 0h6M4.22 19.78l4.24-4.24m6.08 0l4.24 4.24"></path>
+                </svg>
+            </a>
+        </header>
 
-      <div class="settings-section">
-        <h3>Search</h3>
-        <label class="setting-row">
-          <span>Open results in a new tab</span>
-          <input id="newTabToggle" type="checkbox">
-        </label>
-        <label class="setting-row">
-          <span>Search suggestions</span>
-          <input id="suggestionsToggle" type="checkbox" checked>
-        </label>
-      </div>
+        <nav class="results-tabs" aria-label="Search type">
+            <button class="tab-btn active" data-type="web" type="button">Web</button>
+            <button class="tab-btn" data-type="images" type="button">Images</button>
+            <button class="tab-btn" data-type="news" type="button">News</button>
+            <button class="tab-btn" data-type="videos" type="button">Videos</button>
+        </nav>
 
-      <div class="settings-section about">
-        <h3>About WebSearch</h3>
-        <p>WebSearch is designed to provide a clean, privacy-focused search experience. Provider and privacy details can be explained here without cluttering the main search page.</p>
-        <p class="backend-note">Search endpoint: <code>/api/search?q=...</code></p>
-      </div>
-    </section>
-  </aside>
+        <main class="results-content" aria-live="polite" aria-busy="false">
+            <div id="results-status" class="results-status"></div>
+            <div id="results-container" class="results-container"></div>
+        </main>
+    </div>
 
-  <div class="toast" id="toast" role="status" aria-live="polite"></div>
-
-  <script src="/script.js"></script>
+    <script src="script.js"></script>
 </body>
 </html>
