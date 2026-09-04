@@ -3,15 +3,18 @@ export async function searchWithSearchApi(query, type, env) {
     throw new Error("SEARCH_API_KEY is not configured");
   }
 
-  const apiUrl = new URL("https://www.searchapi.io/api/v1/search");
+  const apiUrl = new URL(
+    "https://www.searchapi.io/api/v1/search"
+  );
 
   apiUrl.searchParams.set("engine", "google");
   apiUrl.searchParams.set("q", query);
+  apiUrl.searchParams.set("api_key", env.SEARCH_API_KEY);
   apiUrl.searchParams.set("link", "resolved");
 
   const response = await fetch(apiUrl.toString(), {
+    method: "GET",
     headers: {
-      "Authorization": `Bearer ${env.SEARCH_API_KEY}`,
       "Accept": "application/json"
     }
   });
@@ -19,8 +22,16 @@ export async function searchWithSearchApi(query, type, env) {
   const data = await response.json();
 
   if (!response.ok) {
-    console.error("SearchApi error:", JSON.stringify(data));
-    throw new Error(data.error || data.message || "SearchApi request failed");
+    console.error(
+      "SearchApi error:",
+      JSON.stringify(data)
+    );
+
+    throw new Error(
+      data.error ||
+      data.message ||
+      "SearchApi request failed"
+    );
   }
 
   const organic = Array.isArray(data.organic_results)
@@ -31,11 +42,20 @@ export async function searchWithSearchApi(query, type, env) {
     title: result.title || "",
     url: result.link || "",
     description: result.snippet || "",
-    displayUrl: result.displayed_link || result.link || "",
-    thumbnail: result.thumbnail || null
+    displayUrl:
+      result.displayed_link ||
+      result.link ||
+      "",
+    thumbnail:
+      result.thumbnail ||
+      null
   }));
 }
 
-export async function suggestionsWithSearchApi(query, env) {
+
+export async function suggestionsWithSearchApi(
+  query,
+  env
+) {
   return [];
 }
