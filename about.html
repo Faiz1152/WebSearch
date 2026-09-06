@@ -1,0 +1,37 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="color-scheme" content="light dark">
+  <title>About — WebSearch</title>
+  <link rel="icon" href="favicon.ico">
+  <link rel="stylesheet" href="style.css">
+  <script>
+    (function () {
+      var t = null;
+      try { t = localStorage.getItem('websearch-theme'); } catch (e) {}
+      if (t === 'dark' || t === 'light') document.documentElement.classList.add(t + '-mode');
+    })();
+  </script>
+</head>
+<body>
+  <header class="topbar">
+    <a href="settings.html" class="icon-button" aria-label="Back to Settings" title="Back to Settings">
+      <svg viewBox="0 0 24 24" aria-hidden="true">
+        <path d="M19 12H5"></path>
+        <path d="m12 19-7-7 7-7"></path>
+      </svg>
+    </a>
+  </header>
+  <main style="max-width:820px;margin:30px auto;padding:16px">
+    <h1>About WebSearch</h1>
+    <p>WebSearch is a privacy-focused search interface. The frontend is a static site that communicates only with a backend you control.</p>
+    <h2>Navigation</h2>
+    <p>Access this page only through Settings in the normal site UI.</p>
+    <h2>Privacy</h2>
+    <p>The frontend does not contact external search providers directly — all requests go to your backend.</p>
+  </main>
+  <script src="theme.js"></script>
+</body>
+</html>

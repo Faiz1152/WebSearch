@@ -1,0 +1,81 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="color-scheme" content="light dark">
+  <title>Settings — WebSearch</title>
+  <link rel="icon" href="favicon.ico">
+  <link rel="stylesheet" href="style.css">
+  <script>
+    (function () {
+      var t = null;
+      try { t = localStorage.getItem('websearch-theme'); } catch (e) {}
+      if (t === 'dark' || t === 'light') document.documentElement.classList.add(t + '-mode');
+    })();
+  </script>
+</head>
+<body>
+  <header class="topbar">
+    <a href="index.html" class="icon-button" aria-label="Back to WebSearch home" title="Back to WebSearch">
+      <svg viewBox="0 0 24 24" aria-hidden="true">
+        <path d="M19 12H5"></path>
+        <path d="m12 19-7-7 7-7"></path>
+      </svg>
+    </a>
+  </header>
+
+  <main class="settings" id="main-content">
+    <h1>Settings</h1>
+
+    <section aria-labelledby="appearance-heading">
+      <h2 id="appearance-heading">Appearance</h2>
+      <fieldset class="settings-fieldset">
+        <legend class="visually-hidden">Theme</legend>
+        <label><input type="radio" name="appearance" value="system"> System <span class="settings-hint">(matches your device)</span></label>
+        <label><input type="radio" name="appearance" value="light"> Light</label>
+        <label><input type="radio" name="appearance" value="dark"> Dark</label>
+      </fieldset>
+    </section>
+
+    <section aria-labelledby="search-heading" style="margin-top:16px">
+      <h2 id="search-heading">Search</h2>
+      <label><input id="suggestionsToggle" type="checkbox"> Search suggestions</label>
+      <label><input id="openNewToggle" type="checkbox"> Open results in new tab</label>
+    </section>
+
+    <section style="margin-top:24px">
+      <a id="aboutLink" href="about.html">About WebSearch</a>
+    </section>
+
+    <p class="settings-note">Settings are stored locally in your browser.</p>
+  </main>
+
+  <script src="theme.js"></script>
+  <script>
+    // load/save settings
+    var appearance = (window.WebSearchTheme && window.WebSearchTheme.get()) || 'system';
+    var openNew = localStorage.getItem('websearch-open-new') || 'on';
+    var suggestionsOn = (localStorage.getItem('websearch-suggestions') || 'on') === 'on';
+
+    document.querySelectorAll('input[name="appearance"]').forEach(function (r) {
+      if (r.value === appearance) r.checked = true;
+      r.addEventListener('change', function () {
+        if (window.WebSearchTheme) window.WebSearchTheme.set(r.value);
+      });
+    });
+
+    var openNewToggle = document.getElementById('openNewToggle');
+    openNewToggle.checked = openNew === 'on';
+    openNewToggle.addEventListener('change', function (e) {
+      localStorage.setItem('websearch-open-new', e.target.checked ? 'on' : 'off');
+    });
+
+    var suggestionsToggle = document.getElementById('suggestionsToggle');
+    suggestionsToggle.checked = suggestionsOn;
+    suggestionsToggle.addEventListener('change', function (e) {
+      localStorage.setItem('websearch-suggestions', e.target.checked ? 'on' : 'off');
+    });
+  </script>
+</body>
+</html>

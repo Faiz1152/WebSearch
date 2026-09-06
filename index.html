@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="WebSearch - a modern, intelligent search engine">
+  <meta name="color-scheme" content="light dark">
+  <title>WebSearch</title>
+  <link rel="icon" type="image/x-icon" href="favicon.ico">
+  <link rel="stylesheet" href="style.css">
+  <script>
+    (function () {
+      var t = null;
+      try { t = localStorage.getItem('websearch-theme'); } catch (e) {}
+      if (t === 'dark' || t === 'light') document.documentElement.classList.add(t + '-mode');
+    })();
+  </script>
+</head>
+<body>
+  <!-- Homepage -->
+  <div class="page homepage" id="homepage">
+    <header class="topbar">
+      <a href="settings.html" class="icon-button" aria-label="Settings" title="Settings">
+        <svg viewBox="0 0 24 24" aria-hidden="true">
+          <circle cx="12" cy="12" r="3"></circle>
+          <path d="M12 1v6m0 6v6M4.22 4.22l4.24 4.24m6.08 0l4.24-4.24M1 12h6m6 0h6M4.22 19.78l4.24-4.24m6.08 0l4.24-4.24"></path>
+        </svg>
+      </a>
+    </header>
+
+    <main class="hero">
+      <div class="brand-container">
+        <img src="favicon.ico" alt="WebSearch" class="brand-large">
+        <h1 class="brand-title">WebSearch</h1>
+      </div>
+
+      <form id="searchForm" class="search-form" role="search" autocomplete="off">
+        <div class="search-shell">
+          <input 
+            id="searchInput" 
+            name="q" 
+            type="search" 
+            inputmode="search" 
+            placeholder="Search the web..." 
+            aria-label="Search the web"
+            autocomplete="off"
+            role="combobox"
+            aria-expanded="false"
+            aria-controls="suggestions"
+            aria-autocomplete="list">
+          <button class="submit-button" type="submit" aria-label="Search">
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+              <circle cx="10.8" cy="10.8" r="6.7"></circle>
+              <path d="m16 16 5 5"></path>
+            </svg>
+          </button>
+        </div>
+        <div id="suggestions" class="suggestions" role="listbox" hidden></div>
+      </form>
+    </main>
+  </div>
+
+  <!-- Results View -->
+  <main class="results" id="resultsView" hidden>
+    <div class="results-top">
+      <div class="results-left">
+        <a href="index.html" class="brand-link" aria-label="WebSearch Home">
+          <img src="favicon.ico" alt="WebSearch" class="brand-small">
+        </a>
+        <form id="resultsSearchForm" class="results-search-form" role="search" autocomplete="off">
+          <input 
+            id="resultsInput" 
+            name="q" 
+            type="search" 
+            aria-label="Search results"
+            autocomplete="off">
+          <button class="search-submit" type="submit" aria-label="Search" title="Search">
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+              <circle cx="10.8" cy="10.8" r="6.7"></circle>
+              <path d="m16 16 5 5"></path>
+            </svg>
+          </button>
+        </form>
+      </div>
+      <div class="results-right">
+        <a href="settings.html" class="icon-button" aria-label="Settings" title="Settings">
+          <svg viewBox="0 0 24 24" aria-hidden="true">
+            <circle cx="12" cy="12" r="3"></circle>
+            <path d="M12 1v6m0 6v6M4.22 4.22l4.24 4.24m6.08 0l4.24-4.24M1 12h6m6 0h6M4.22 19.78l4.24-4.24m6.08 0l4.24-4.24"></path>
+          </svg>
+        </a>
+      </div>
+    </div>
+
+    <nav class="tabs" role="tablist" aria-label="Search type">
+      <button class="tab active" data-type="all" type="button" role="tab" aria-selected="true">All</button>
+      <button class="tab" data-type="web" type="button" role="tab" aria-selected="false">Web</button>
+      <button class="tab" data-type="images" type="button" role="tab" aria-selected="false">Images</button>
+      <button class="tab" data-type="news" type="button" role="tab" aria-selected="false">News</button>
+      <button class="tab" data-type="videos" type="button" role="tab" aria-selected="false">Videos</button>
+    </nav>
+
+    <!-- Special result components -->
+    <div id="specialResults" class="special-results" hidden></div>
+
+    <!-- Main results section -->
+    <section class="results-body" aria-live="polite" aria-label="Search results">
+      <div id="resultsStatus" class="results-status"></div>
+      <div id="resultsList" class="results-list"></div>
+    </section>
+  </main>
+
+  <script src="theme.js"></script>
+  <script src="special.js"></script>
+  <script src="script.js"></script>
+</body>
+</html>
