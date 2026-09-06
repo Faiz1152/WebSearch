@@ -177,7 +177,7 @@ body {
 }
 
 .page.homepage[hidden] {
-  display: none;
+  display: none !important;
 }
 
 .hero {
@@ -965,6 +965,9 @@ body {
 /* ============ SETTINGS PAGE ============ */
 .settings {
   animation: fadeIn 300ms ease-out;
+  max-width: 820px;
+  margin: 30px auto;
+  padding: 16px 24px;
 }
 
 .settings h1 {
@@ -1229,7 +1232,7 @@ body {
   .settings {
     max-width: 100%;
     margin: 16px;
-    padding: 0;
+    padding: 0 4px;
   }
   
   .settings h1 {
