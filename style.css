@@ -179,6 +179,26 @@ body {
   stroke-linejoin: round;
 }
 
+/* Small vertical tuning: move hero slightly down and pull the topbar search a little up
+   to create a pleasing visual rhythm on both desktop and mobile. */
+.page.homepage .hero {
+  /* add a little top space to push logo/title down */
+  padding-top: 40px;
+}
+
+/* gently pull the search form up so it's visually closer to the viewport top */
+.topbar #searchForm,
+.topbar .results-search-form {
+  transform: translateY(-6px);
+}
+
+/* ensure transforms don't break stacking on mobile */
+@media (max-width: 700px) {
+  .page.homepage .hero { padding-top: 56px; }
+  .topbar #searchForm,
+  .topbar .results-search-form { transform: translateY(-8px); }
+}
+
 /* ============ HOMEPAGE ============ */
 .page.homepage {
   display: flex;
