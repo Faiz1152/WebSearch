@@ -998,427 +998,85 @@ body {
   width: 96px;
   height: 96px;
   flex-shrink: 0;
-  border-radius: 8px;
-  overflow: hidden;
-  background: var(--bg-secondary);
 }
 
-.news-thumb img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  display: block;
-}
-
-.news-body {
-  flex: 1;
-  min-width: 0;
-}
-
-.news-source-line {
-  display: flex;
-  gap: 8px;
-  font-size: 12px;
-  color: var(--text-muted);
-  margin-bottom: 4px;
-  flex-wrap: wrap;
-}
-
-@media (max-width: 480px) {
-  .news-card {
-    flex-direction: column;
-  }
-  .news-thumb {
-    width: 100%;
-    height: 160px;
-  }
-}
-
-/* ============ SUGGESTIONS: active/keyboard state ============ */
-.suggestions button[aria-selected="true"] {
-  background: var(--bg-secondary);
-}
-
-/* ============ SETTINGS PAGE ============ */
-.settings {
-  animation: fadeIn 300ms ease-out;
-  max-width: 820px;
-  margin: 30px auto;
-  padding: 16px 24px;
-}
-
-.settings h1 {
-  font-size: 28px;
-  margin-bottom: 24px;
-  color: var(--text);
-}
-
-.settings h2 {
-  font-size: 18px;
-  margin-top: 20px;
-  margin-bottom: 12px;
-  color: var(--text);
-}
-
-.settings section {
-  background: var(--card);
-  padding: 16px;
-  border-radius: var(--radius);
-  margin-bottom: 12px;
-  border: 1px solid var(--border);
-}
-
-.settings label {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  margin-bottom: 8px;
-  cursor: pointer;
-  color: var(--text);
-  font-size: 15px;
-  transition: var(--transition);
-}
-
-.settings label:hover {
-  color: var(--accent);
-}
-
-.settings label:last-child {
-  margin-bottom: 0;
-}
-
-.settings input[type="radio"],
-.settings input[type="checkbox"] {
-  cursor: pointer;
-  width: 18px;
-  height: 18px;
-  accent-color: var(--accent);
-}
-
-.settings a {
-  color: var(--accent);
-  text-decoration: none;
-  transition: var(--transition);
-}
-
-.settings a:hover {
-  text-decoration: underline;
-}
-
-.settings-note {
-  color: var(--text-muted);
-  font-size: 13px;
-  margin-top: 12px;
-}
-
-.settings-fieldset {
-  border: 0;
-  padding: 0;
-  margin: 0;
-  display: flex;
-  flex-direction: column;
-}
-
-.settings-hint {
-  color: var(--text-muted);
-  font-size: 13px;
-}
-
-/* ============ RESPONSIVE DESIGN ============ */
-
-@media (max-width: 1024px) {
-  .results {
-    padding: 12px;
-  }
-  
-  .results-search-form input {
-    width: 100%;
-  }
-  
-  .hero {
-    padding: 16px;
-  }
-  
-  .search-shell input {
-    font-size: 16px;
-  }
-}
-
-@media (max-width: 768px) {
+/* ----------------- MOBILE / SMALL SCREENS FIXES ----------------- */
+/* Merged mobile adjustments into style.css to avoid an extra file. These rules
+   only apply under 700px so desktop layout remains unchanged. */
+@media (max-width: 700px) {
+  /* Keep topbar elements inline and avoid wrapping */
   .topbar {
-    padding: 12px 16px;
-  }
-  
-  .hero {
-    gap: 20px;
-    padding: 16px;
-    justify-content: flex-start;
-  }
-  
-  .brand-large {
-    width: 80px;
-    height: 80px;
-  }
-  
-  .search-form {
-    max-width: 100%;
-  }
-  
-  .search-shell {
-    padding: 12px;
-  }
-  
-  .search-shell input {
-    font-size: 16px;
-    padding: 6px 8px;
-  }
-  
-  .results-top {
-    flex-direction: column;
-    align-items: stretch;
-  }
-  
-  .results-left {
-    flex-direction: column;
-  }
-  
-  .results-search-form input {
-    width: 100%;
-  }
-  
-  .tabs {
-    overflow-x: auto;
-    -webkit-overflow-scrolling: touch;
-  }
-  
-  .grid {
-    grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
-  }
-  
-  .article-result {
-    padding: 12px;
-  }
-  
-  .result-title {
-    font-size: 16px;
-  }
-  
-  .result-description {
-    font-size: 14px;
-  }
-  
-  .settings h1 {
-    font-size: 24px;
-  }
-  
-  .settings section {
-    padding: 12px;
-  }
-  
-  .map-canvas {
-    height: 250px;
-  }
-}
-
-@media (max-width: 480px) {
-  .hero {
-    margin: 0;
-    gap: 16px;
-  }
-  
-  .brand-large {
-    width: 64px;
-    height: 64px;
-  }
-  
-  .search-shell {
-    padding: 10px;
-    flex-direction: column;
-    border-radius: 12px;
+    justify-content: space-between;
     gap: 8px;
+    padding: 8px 12px;
+    flex-wrap: nowrap;
+    align-items: center;
   }
-  
-  .search-shell input {
-    font-size: 16px;
+
+  /* Brand (small icon) stays on the left */
+  .topbar .brand-link {
+    order: 1;
+    margin-right: 8px;
+    flex: 0 0 auto;
+  }
+
+  /* Search form (homepage and results) sits in the middle and can shrink */
+  .topbar #searchForm,
+  .topbar .results-search-form,
+  #searchForm,
+  .results-search-form {
+    order: 2;
+    flex: 1 1 auto;
+    min-width: 0; /* allows input to shrink */
+    margin: 0 8px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+
+  /* Inputs must be allowed to shrink to avoid pushing other elements */
+  .topbar #searchForm input,
+  .topbar .results-search-form input,
+  .results-search-form input {
+    min-width: 0;
     width: 100%;
+    font-size: 15px;
+    padding: 8px 10px;
   }
-  
-  .submit-button {
+
+  /* Keep settings icon on the right */
+  .topbar .icon-button {
+    order: 3;
     margin-left: 0;
-    width: 100%;
+    flex: 0 0 auto;
   }
-  
-  .results {
-    padding: 8px;
-  }
-  
+
+  /* Results view top bar: keep single-line layout */
   .results-top {
-    flex-direction: column;
-    align-items: stretch;
-    margin-bottom: 12px;
-  }
-  
-  .results-left {
+    justify-content: space-between;
     gap: 8px;
-    flex-direction: column;
+    padding-bottom: 12px;
+    flex-wrap: nowrap;
+    align-items: center;
   }
-  
-  .results-search-form input {
-    width: 100%;
-    font-size: 16px;
+
+  .results-left { flex: 1 1 auto; min-width: 0; }
+  .results-right { flex: 0 0 auto; margin-left: 8px; }
+
+  /* Reduce hero branding so it doesn't push search UI down */
+  .brand-large {
+    width: 72px;
+    height: 72px;
   }
-  
-  .tabs {
-    gap: 4px;
-    font-size: 13px;
-  }
-  
-  .tab {
-    padding: 6px 12px;
-  }
-  
-  .grid {
-    grid-template-columns: repeat(auto-fill, minmax(80px, 1fr));
-    gap: 8px;
-  }
-  
-  .article-result {
+
+  .hero { padding: 16px; gap: 18px; }
+
+  /* Slightly reduce paddings on result cards so content fits better */
+  .article-result, .news-card, .video-card, .chart-container, .map-container {
     padding: 12px;
   }
-  
-  .result-title {
-    font-size: 16px;
-  }
-  
-  .result-url {
-    font-size: 12px;
-  }
-  
-  .result-description {
-    font-size: 14px;
-  }
-  
-  .chart-canvas {
-    max-height: 300px;
-  }
-  
-  .map-canvas {
-    height: 200px;
-  }
-  
-  .settings {
-    max-width: 100%;
-    margin: 16px;
-    padding: 0 4px;
-  }
-  
-  .settings h1 {
-    font-size: 20px;
-    margin-bottom: 16px;
-  }
-  
-  .settings h2 {
-    font-size: 16px;
-  }
-  
-  .suggestions button {
-    padding: 10px;
-  }
-}
 
-/* ============ ANIMATIONS ============ */
-
-@keyframes fadeIn {
-  from {
-    opacity: 0;
-  }
-  to {
-    opacity: 1;
-  }
-}
-
-@keyframes fadeInUp {
-  from {
-    opacity: 0;
-    transform: translateY(12px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-@keyframes slideInLeft {
-  from {
-    opacity: 0;
-    transform: translateX(-12px);
-  }
-  to {
-    opacity: 1;
-    transform: translateX(0);
-  }
-}
-
-@keyframes slideDown {
-  from {
-    opacity: 0;
-    transform: translateY(-8px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-@keyframes pulse {
-  0%, 100% {
-    opacity: 1;
-  }
-  50% {
-    opacity: 0.5;
-  }
-}
-
-@keyframes blink {
-  0%, 20%, 100% {
-    opacity: 1;
-  }
-  50% {
-    opacity: 0;
-  }
-}
-
-/* ============ ACCESSIBILITY ============ */
-
-/* High contrast mode */
-@media (prefers-contrast: more) {
-  :root {
-    --border-light: #ccc;
-    --border-dark: #555;
-  }
-}
-
-/* Reduced motion */
-@media (prefers-reduced-motion: reduce) {
-  * {
-    animation-duration: 0.01ms !important;
-    animation-iteration-count: 1 !important;
-    transition-duration: 0.01ms !important;
-  }
-}
-
-/* Print styles */
-@media print {
-  .topbar,
-  .results-top,
-  .tabs,
-  .icon-button {
-    display: none;
-  }
-  
-  .article-result {
-    page-break-inside: avoid;
-    box-shadow: none;
-    border: 1px solid #ddd;
-  }
+  /* Make tabs scrollable and compact */
+  .tabs { gap: 6px; margin: 12px 0; }
+  .tab { padding: 6px 10px; font-size: 13px; }
 }
