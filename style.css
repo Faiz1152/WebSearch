@@ -214,6 +214,21 @@ body {
   animation: fadeInUp 600ms ease-out;
 }
 
+.brand-title {
+  font-size: 32px;
+  font-weight: 700;
+  margin: 0;
+  color: var(--text);
+  animation: fadeInUp 600ms ease-out 50ms both;
+}
+
+.brand-tagline {
+  font-size: 16px;
+  margin: -16px 0 0;
+  color: var(--text-muted);
+  animation: fadeInUp 600ms ease-out 100ms both;
+}
+
 .search-form {
   width: 100%;
   max-width: 760px;
