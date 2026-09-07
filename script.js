@@ -15,10 +15,13 @@
   const resultsStatus = $('#resultsStatus');
   const resultsList = $('#resultsList');
   const specialResults = $('#specialResults');
+  const relatedSearchesEl = $('#relatedSearches');
+  const paginationEl = $('#paginationControls');
   const tabs = Array.from(document.querySelectorAll('.tab'));
 
   let currentQuery = '';
   let currentType = 'all';
+  let currentPage = 1;
   let suggestionTimer = null;
   let suggestionItems = [];
   let suggestionIndex = -1;
@@ -46,19 +49,22 @@
     history.pushState({q: query}, '', `?q=${encodeURIComponent(query)}`);
   }
 
-  async function performSearch(query, type = currentType) {
+  async function performSearch(query, type = currentType, page = 1) {
     query = (query || '').trim();
     if (!query) return;
     currentQuery = query;
     currentType = type || currentType;
+    currentPage = page || 1;
 
     showResults(query);
     resultsStatus.innerHTML = `<span class="loading">Searching…</span>`;
     resultsList.innerHTML = renderSkeleton();
     if (specialResults) { specialResults.hidden = true; specialResults.innerHTML = ''; }
+    if (relatedSearchesEl) { relatedSearchesEl.hidden = true; relatedSearchesEl.innerHTML = ''; }
+    if (paginationEl) { paginationEl.hidden = true; paginationEl.innerHTML = ''; }
 
     try {
-      const url = `${API_BASE}/api/search?q=${encodeURIComponent(query)}&type=${encodeURIComponent(type)}`;
+      const url = `${API_BASE}/api/search?q=${encodeURIComponent(query)}&type=${encodeURIComponent(type)}&page=${encodeURIComponent(currentPage)}`;
       const resp = await fetch(url, {headers:{'Accept':'application/json'}});
       if (!resp.ok) {
         const body = await resp.json().catch(()=>null);
@@ -68,6 +74,8 @@
       const data = await resp.json();
       if (window.WebSearchSpecial) window.WebSearchSpecial.render(specialResults, query, data);
       renderResults(data, type);
+      renderRelatedSearches(data.relatedSearches);
+      renderPagination(data.pagination);
     } catch (err) {
       resultsStatus.textContent = '';
       resultsList.innerHTML = renderErrorState(err.message || 'Network or backend error.');
@@ -96,11 +104,49 @@
     </div>`;
   }
 
+  function renderRelatedSearches(list){
+    if (!relatedSearchesEl) return;
+    const items = Array.isArray(list) ? list : [];
+    const chips = items
+      .map(item => (item && (item.query || item.q || item.name || item.title)) || '')
+      .filter(Boolean);
+
+    if (!chips.length) { relatedSearchesEl.hidden = true; relatedSearchesEl.innerHTML = ''; return; }
+
+    relatedSearchesEl.innerHTML = `
+      <div class="related-title">Related searches</div>
+      <div class="related-chips">
+        ${chips.map(q => `<button type="button" class="related-chip" data-query="${escapeHTML(q)}">${escapeHTML(q)}</button>`).join('')}
+      </div>`;
+    relatedSearchesEl.hidden = false;
+  }
+
+  function renderPagination(pagination){
+    if (!paginationEl) return;
+    if (!pagination || (!pagination.hasPreviousPage && !pagination.hasNextPage)) {
+      paginationEl.hidden = true;
+      paginationEl.innerHTML = '';
+      return;
+    }
+    paginationEl.innerHTML = `
+      <button type="button" class="page-btn" data-dir="prev" ${pagination.hasPreviousPage ? '' : 'disabled'} aria-label="Previous page">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m15 18-6-6 6-6"></path></svg>
+        Previous
+      </button>
+      <span class="page-indicator">Page ${pagination.page}</span>
+      <button type="button" class="page-btn" data-dir="next" ${pagination.hasNextPage ? '' : 'disabled'} aria-label="Next page">
+        Next
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m9 18 6-6-6-6"></path></svg>
+      </button>`;
+    paginationEl.hidden = false;
+  }
+
   function escapeHTML(s){return String(s||'').replace(/[&<>"']/g,ch=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;','\'"':'&#039;'}[ch]||ch));}
 
   function renderResults(data, type){
     const results = Array.isArray(data?.results) ? data.results : [];
-    const total = typeof data?.total === 'number' ? data.total : results.length;
+    const totalResults = data?.pagination && typeof data.pagination.totalResults === 'number' ? data.pagination.totalResults : null;
+    const total = totalResults !== null ? totalResults : (typeof data?.total === 'number' ? data.total : results.length);
 
     resultsStatus.textContent = total ? `${total.toLocaleString()} results` : '';
 
@@ -235,8 +281,38 @@
     tab.classList.add('active');
     tab.setAttribute('aria-selected','true');
     currentType = tab.dataset.type;
-    if (currentQuery) performSearch(currentQuery, currentType);
+    if (currentQuery) performSearch(currentQuery, currentType, 1);
   }));
+
+  // pagination
+  if (paginationEl) {
+    paginationEl.addEventListener('click', e=>{
+      const btn = e.target.closest('.page-btn');
+      if (!btn || btn.disabled) return;
+      const nextPage = btn.dataset.dir === 'next' ? currentPage + 1 : Math.max(1, currentPage - 1);
+      performSearch(currentQuery, currentType, nextPage);
+      resultsView.scrollIntoView({ block: 'start' });
+    });
+  }
+
+  // related searches
+  if (relatedSearchesEl) {
+    relatedSearchesEl.addEventListener('click', e=>{
+      const chip = e.target.closest('.related-chip');
+      if (!chip) return;
+      const q = chip.dataset.query;
+      if (!q) return;
+
+      tabs.forEach(t=>{ t.classList.remove('active'); t.setAttribute('aria-selected','false'); });
+      const allTab = tabs.find(t=>t.dataset.type === 'all');
+      if (allTab) { allTab.classList.add('active'); allTab.setAttribute('aria-selected','true'); }
+      currentType = 'all';
+
+      searchInput.value = q;
+      resultsInput.value = q;
+      performSearch(q, 'all', 1);
+    });
+  }
 
   // keyboard shortcut
   document.addEventListener('keydown', e=>{
