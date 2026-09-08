@@ -24,14 +24,28 @@
       </svg>
     </a>
   </header>
-  <main style="max-width:820px;margin:30px auto;padding:16px">
+
+  <main class="about">
     <h1>About WebSearch</h1>
-    <p>WebSearch is a privacy-focused search interface. The frontend is a static site that communicates only with a backend you control.</p>
-    <h2>Navigation</h2>
-    <p>Access this page only through Settings in the normal site UI.</p>
+
+    <p class="about-lead">WebSearch is a simple, fast way to search the web. When you type something into the search bar, it's sent to a small backend server, which reaches out to Google and brings the results straight back to show you here. There are no accounts, nothing is tracked, and nothing extra happens behind the scenes. It's built to feel exactly as simple as it looks — you search, and you get results.</p>
+
+    <h2>How search works</h2>
+    <p>Every search you make is quietly passed along to WebSearch's backend, which asks Google for matching results and sends them back to be shown on this page. Your search never talks to Google directly — the backend sits in between, keeping that connection private. It's a small extra step that keeps things simple on your end while still giving you real, current results.</p>
+
+    <h2>Results and pages</h2>
+    <p>Results are shown 15 at a time, with Previous and Next buttons at the bottom to move between pages. You'll often see related searches too, so you can explore nearby topics with a single click. Keeping each page to a manageable size makes results faster to load and easier to read.</p>
+
+    <h2>Search types</h2>
+    <p>Alongside regular web results, WebSearch also supports Images, News, and Videos — just switch tabs to change what you're looking for. Each type is shown in a way that fits it best, like a photo grid for images or short cards for news and videos. Underneath, it's still the same simple search.</p>
+
     <h2>Privacy</h2>
-    <p>The frontend does not contact external search providers directly — all requests go to your backend.</p>
+    <p>WebSearch doesn't ask you to sign in, and it doesn't track what you search. The only things saved are your own preferences, like your theme choice, and those stay stored locally in your browser — never sent anywhere. Nothing about your searches is kept once the results are shown to you.</p>
+
+    <h2>Appearance</h2>
+    <p>You can switch between System, Light, and Dark themes from Settings, and WebSearch will remember your choice the next time you visit. System mode automatically matches whatever your device is already set to. It's a small touch, but it's there if you want it.</p>
   </main>
+
   <script src="theme.js"></script>
 </body>
 </html>
