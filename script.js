@@ -46,7 +46,7 @@
     resultsView.hidden = false;
     resultsInput.value = query;
     resultsInput.focus();
-    history.pushState({q: query}, '', `?q=${encodeURIComponent(query)}`);
+    history.pushState({q: query}, '', `?q=${toQueryString(query)}`);
   }
 
   async function performSearch(query, type = currentType, page = 1) {
@@ -142,6 +142,13 @@
   }
 
   function escapeHTML(s){return String(s||'').replace(/[&<>"']/g,ch=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;','\'"':'&#039;'}[ch]||ch));}
+
+  // Builds a Google-style query string: spaces become "+" instead of "%20"
+  // (e.g. "snake game" -> "q=snake+game"), while everything else is still
+  // safely percent-encoded. Used only for the visible address-bar URL.
+  function toQueryString(str){
+    return encodeURIComponent(str).replace(/%20/g, '+');
+  }
 
   function renderResults(data, type){
     const results = Array.isArray(data?.results) ? data.results : [];
