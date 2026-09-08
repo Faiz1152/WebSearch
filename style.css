@@ -895,6 +895,56 @@ body {
   opacity: 0.9;
 }
 
+/* ============ ABOUT PAGE ============ */
+.about {
+  max-width: 640px;
+  margin: 40px auto;
+  padding: 0 24px 40px;
+  animation: fadeIn 300ms ease-out;
+}
+
+.about h1 {
+  font-size: 28px;
+  margin: 0 0 20px;
+  color: var(--text);
+}
+
+.about-lead {
+  font-size: 17px;
+  line-height: 1.7;
+  color: var(--text);
+  margin: 0 0 36px;
+}
+
+.about h2 {
+  font-size: 17px;
+  font-weight: 600;
+  margin: 28px 0 10px;
+  color: var(--text);
+}
+
+.about p {
+  font-size: 15px;
+  line-height: 1.7;
+  color: var(--text-muted);
+  margin: 0;
+}
+
+@media (max-width: 480px) {
+  .about {
+    margin: 24px auto;
+    padding: 0 20px 32px;
+  }
+
+  .about h1 {
+    font-size: 24px;
+  }
+
+  .about-lead {
+    font-size: 16px;
+  }
+}
+
 /* ============ SETTINGS PAGE ============ */
 .settings {
   animation: fadeIn 300ms ease-out;
